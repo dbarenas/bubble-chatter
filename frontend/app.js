@@ -1,38 +1,42 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const chatLog = document.getElementById('chat-log');
-    const chatInput = document.getElementById('chat-input');
-    const sendButton = document.getElementById('send-button');
-    const bubbleContainer = document.getElementById('bubble-container');
-
+    const bubbleHolder = document.querySelector('#chat-container .bubble-holder');
     const backendUrl = 'http://127.0.0.1:8000/chat'; // Assuming default FastAPI port
 
-    function displayMessage(message, sender) {
-        const messageDiv = document.createElement('div');
-        messageDiv.classList.add('message', sender === 'user' ? 'user-message' : 'system-message');
-        messageDiv.textContent = message;
-        chatLog.appendChild(messageDiv);
-        chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
-    }
-
     function renderBubbles(bubbles) {
-        // Clear previous bubbles
-        d3.select(bubbleContainer).selectAll('*').remove();
+        // Clear previous dynamic bubbles
+        bubbleHolder.querySelectorAll('.dynamic-bubble').forEach(el => el.remove());
 
         if (!bubbles || bubbles.length === 0) {
             return;
         }
 
-        // Render new bubbles
-        d3.select(bubbleContainer)
-            .selectAll('div.bubble')
-            .data(bubbles)
-            .join('div')
-            .attr('class', 'bubble')
-            .text(d => d.text)
-            .on('click', (event, d) => {
-                displayMessage(d.text, 'user'); // Show bubble text as user message
-                sendMessageToServer(d.payload);
+        bubbles.forEach((bubbleData, index) => {
+            const dynamicBubbleContainer = document.createElement('div');
+            // Assign classes for structure and animation. Add 'dynamic-bubble' for easy removal.
+            // Use a cycling index for some variation based on existing bubble styles (e.g., bubble-4 to bubble-8 are small)
+            const styleBaseIndex = 4 + (index % 5); // Cycles through 4, 5, 6, 7, 8
+            dynamicBubbleContainer.className = `bubble-${styleBaseIndex} bubble-container bubble-animation-x dynamic-bubble`;
+
+            // Create the inner animated element
+            const innerBubble = document.createElement('div');
+            innerBubble.className = 'bubble-small bubble-animation-y'; // Assuming all dynamic are small for now
+            innerBubble.textContent = bubbleData.text;
+
+            dynamicBubbleContainer.appendChild(innerBubble);
+
+            // Customize position and animation slightly to avoid perfect overlap
+            // These are just examples; a more robust layout might be needed.
+            dynamicBubbleContainer.style.left = `${(index * 20 + 5) % 70 + 10}%`; // Spread them out a bit
+            dynamicBubbleContainer.style.animationDelay = `${(index * 0.3)}s`;
+            innerBubble.style.animationDelay = `${(index * 0.2) + 0.5}s`; // Stagger y-animation
+
+            dynamicBubbleContainer.addEventListener('click', () => {
+                // No need to display message in chat log anymore
+                sendMessageToServer(bubbleData.payload);
             });
+
+            bubbleHolder.appendChild(dynamicBubbleContainer);
+        });
     }
 
     async function sendMessageToServer(messageText) {
@@ -47,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!response.ok) {
                 console.error('Error from server:', response.status, await response.text());
-                displayMessage(`Error: Could not connect to the server or server returned an error. (Status: ${response.status})`, 'system');
+                // displayMessage(`Error: Could not connect to the server or server returned an error. (Status: ${response.status})`, 'system');
                 renderBubbles([]); // Clear bubbles on error
                 return;
             }
@@ -60,27 +64,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error('Failed to send message or parse response:', error);
-            displayMessage('Error: Failed to communicate with the chat service.', 'system');
+            // displayMessage('Error: Failed to communicate with the chat service.', 'system');
             renderBubbles([]); // Clear bubbles on error
         }
     }
 
-    sendButton.addEventListener('click', () => {
-        const message = chatInput.value.trim();
-        if (message) {
-            displayMessage(message, 'user');
-            sendMessageToServer(message);
-            chatInput.value = '';
-        }
-    });
-
-    chatInput.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter') {
-            sendButton.click();
-        }
-    });
-
-    // Initial greeting or prompt (optional)
-    // displayMessage("Hello! How can I help you today?", "system");
-    // sendMessageToServer("initial_greeting"); // To get initial bubbles
+    // Initial greeting or prompt
+    sendMessageToServer("initial_greeting"); // To get initial bubbles
 });
