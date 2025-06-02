@@ -61,6 +61,7 @@ From the project's root directory, run:
 uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
 ```
 *   The backend API will be available at `http://127.0.0.1:8000`.
+    *   A root endpoint `/` provides a welcome message.
 *   OpenAPI documentation: `http://127.0.0.1:8000/docs`.
 
 **Frontend (HTML, JS, D3.js):**
@@ -91,6 +92,7 @@ uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
 
 2.  **Accessing the Backend:**
     *   The backend API will be available at `http://127.0.0.1:8000`.
+        *   A root endpoint `/` provides a welcome message.
     *   OpenAPI documentation: `http://127.0.0.1:8000/docs`.
 
 3.  **Stopping:**
@@ -116,6 +118,7 @@ uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
 
 3.  **Accessing the Backend:**
     *   As above, the backend will be on `http://127.0.0.1:8000`.
+        *   A root endpoint `/` provides a welcome message.
 
 4.  **Stopping and Removing the Container:**
     *   If running in foreground: `Ctrl+C`.
@@ -129,6 +132,10 @@ uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
 
 ## How it Works (Summary)
 
-The frontend (`app.js`) sends user messages to the backend's `/chat` endpoint. The backend (`main.py`) processes these and returns bubble options. D3.js renders these bubbles. Clicking a bubble sends its payload back to the backend.
+The backend (`main.py`) defines two endpoints:
+*   `/` (GET): Returns a welcome message and API information.
+*   `/chat` (POST): Accepts a user message, processes it, and returns a list of bubble options.
+
+The frontend (`app.js`) sends user messages to the backend's `/chat` endpoint. D3.js renders the returned bubbles. Clicking a bubble sends its payload back to the backend.
 
 EOF

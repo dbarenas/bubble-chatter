@@ -4,6 +4,17 @@ from typing import List, Dict, Any
 
 app = FastAPI()
 
+# Root endpoint
+@app.get("/")
+async def read_root():
+    return {
+        "message": "Welcome to the Chat Bubble Backend!",
+        "description": "This API powers a chat interface with dynamic bubble responses.",
+        "usage_note": "The main chat functionality is at the /chat (POST) endpoint.",
+        "documentation_url": "/docs",
+        "openapi_url": "/openapi.json"
+    }
+
 class ChatMessage(BaseModel):
     message: str
 
