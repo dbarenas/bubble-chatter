@@ -1,8 +1,25 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware # Added
 from pydantic import BaseModel
 from typing import List, Dict, Any
 
 app = FastAPI()
+
+# Add CORS middleware
+origins = [
+    "null",  # Allow file:// origin (for local index.html)
+    "http://localhost", # Common for local dev
+    "http://127.0.0.1", # Common for local dev
+    # Add other origins if needed, e.g., a frontend dev server port
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins, # Or use ["*"] for a public API, but specific is better
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "OPTIONS"], # OPTIONS is important for preflight requests
+    allow_headers=["*"] # Or specify headers like ["Content-Type"]
+)
 
 # Root endpoint
 @app.get("/")
