@@ -42,6 +42,17 @@ class BubbleOption(BaseModel):
 class ChatResponse(BaseModel):
     bubbles: List[BubbleOption]
 
+class NewsItem(BaseModel):
+    title: str
+    url: str
+
+# Prepare sample news data
+sample_news_data: List[NewsItem] = []
+for i in range(1, 1001):
+    sample_news_data.append(
+        NewsItem(title=f"Sample News Title {i}", url=f"http://example.com/news/{i}")
+    )
+
 @app.post("/chat", response_model=ChatResponse)
 async def chat_endpoint(chat_message: ChatMessage):
     message = chat_message.message.lower()
@@ -57,6 +68,10 @@ async def chat_endpoint(chat_message: ChatMessage):
             BubbleOption(text="Default Option 2", payload="default_2")
         ]
     return ChatResponse(bubbles=bubbles)
+
+@app.get("/api/news_stream", response_model=List[NewsItem])
+async def get_news_stream():
+    return sample_news_data
 
 # To run this app (from the root directory of the project):
 # uvicorn backend.main:app --reload
