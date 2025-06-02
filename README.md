@@ -1,13 +1,25 @@
 # Chat with Bubbles Demo
 
-This project demonstrates a simple web-based chat interface where user interactions can lead to a series of predefined options presented as clickable bubbles. It uses a Python FastAPI backend and an HTML/JavaScript/D3.js frontend. The backend can be run using Docker.
+Based on a list of title,  urls, show iterative bubble by title.
+![image](https://github.com/user-attachments/assets/d0ce535f-f194-4bb2-8fb1-b4d5fe51a5c9)
+
+What it offers:
+
+Dynamic Visualizations: At its core, Bubble Chatter is poised to generate interactive, bubble-based visualizations. Imagine news articles, topics, or trending keywords appearing as vibrant, expanding, and contracting bubbles, offering an intuitive and aesthetically pleasing way to explore current events.
+Real-time (or near real-time) Updates: The underlying code can be adapted to pull in data from various news sources. With a well-implemented refresh mechanism (e.g., every 30 minutes, as you mentioned), this project empowers users to maintain a consistently updated view of the news landscape, ensuring they're always in tune with the latest developments.
+Customizable Data Streams: The flexibility of the code allows for integration with diverse APIs and data feeds. This means you can tailor your "bubble present" to display news from specific outlets, focus on particular topics, or even visualize social media trends, creating a personalized news experience.
+Engaging User Experience: Moving beyond traditional news feeds, Bubble Chatter introduces an element of discovery and play. The dynamic movement and interaction of the bubbles can make news consumption more engaging and less passive, encouraging users to delve deeper into topics that pique their interest.
+Foundation for Further Development: As an open-source project, "bubble-chatter" serves as an excellent starting point for developers and data enthusiasts. Opportunities abound for:
+Implementing advanced filtering and sorting mechanisms.
+Adding sentiment analysis to color-code bubbles based on the emotional tone of articles.
+Integrating with natural language processing (NLP) to identify key entities and relationships within the news.
+Developing user interfaces for easy customization of news sources and visualization parameters.
+Exploring different bubble physics and interaction models for enhanced user engagement.
+Bubble Chatter is more than just a news reader; it's a dynamic canvas for visualizing the ever-flowing stream of information, offering a fresh, interactive, and highly customizable approach to staying informed.
 
 ## Features
 
-*   Type messages into an input field.
-*   Receive responses as clickable bubbles.
-*   Clicking a bubble sends its associated payload as a new message to the backend, triggering further responses.
-*   Simple conversational flow based on predefined backend logic.
+*  Instead as a navegable list, present a wallpaper 
 *   Backend containerization using Docker and Docker Compose.
 *   CORS (Cross-Origin Resource Sharing) enabled for easy local development with `file://` origins and standard HTTP origins.
 
