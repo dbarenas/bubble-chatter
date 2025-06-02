@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mounts the backend code into the container for development.
+      # Uvicorn's --reload flag would pick up changes automatically.
+      # Note: The default CMD in Dockerfile doesn't use --reload.
+      # For development with live reload, you might override the command:
+      # command: ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+      - ./backend:/app/backend
+    environment:
+      # Example of environment variables if your app used them
+      # - SETTING_KEY=VALUE
+      - PYTHONUNBUFFERED=1 # Ensures print statements and logs are sent straight to the console
+
+networks:
+  default:
+    driver: bridge
