@@ -1,4 +1,4 @@
-# Chat with Bubbles Demo
+# Chat with Bubbles (popup news titles in bubbles - news retrieved frequently  - news visualization experiment)
 
 Based on a list of title,  urls, show iterative bubble by title.
 ![image](https://github.com/user-attachments/assets/d0ce535f-f194-4bb2-8fb1-b4d5fe51a5c9)
